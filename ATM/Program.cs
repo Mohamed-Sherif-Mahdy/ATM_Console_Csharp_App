@@ -15,37 +15,48 @@ namespace ATM
         Console.WriteLine("CardNum:");
         string cardnum= Console.ReadLine();
         Console.WriteLine("pin:");
-        int pin=int.Parse(Console.ReadLine());
-        if (users.Where(c => c.cardNumber == cardnum && c.Pin==pin)
-                              .Count() == 1)
-         
+        int pin;
+        if(int.TryParse(Console.ReadLine(), out pin)) 
         {
-          BankUser user = users.SingleOrDefault(c => c.cardNumber == cardnum && c.Pin == pin);
-          Console.WriteLine($"Welcome {user.firstName} {user.lastName} :)");
-          Options();
-          int choose = 0;
-          do
+          if(BankUser.checkPin(users,cardnum!,pin))
           {
-            choose = int.Parse(Console.ReadLine());
-            if (choose == 1) deposit(user);
-            else if (choose == 2) withdraw(user);
-            else if (choose == 3) showBalance(user);
-            else if (choose == 4) break;
-            else choose = 0;
+            BankUser user = BankUser.GetUser(users,cardnum,pin);
+            Console.WriteLine($"Welcome {user.firstName} {user.lastName} :)");
+            Options();
+            int choose;
+            do
+            {
+              if (int.TryParse(Console.ReadLine(), out choose))
+              {
+                if (choose == 1) BankUser.deposit(user);
+                else if (choose == 2) BankUser.withdraw(user);
+                else if (choose == 3) BankUser.showBalance(user);
+                else if (choose == 4) break;
+              }
+              else
+              {
+                choose = 0;
+                Console.WriteLine("Invalid Input");
+              }
+
+            }
+            while (choose != 4);
+            Console.WriteLine("Thank you for banking with us");
 
           }
-          while (choose != 4);
-          Console.WriteLine("Thank you for banking with us");
-           
-        }
 
+          else
+          {
+            Console.WriteLine("Invalid Data...");
+          }
+        }
         else
         {
-          Console.WriteLine("Invalid Data...");
+          Console.WriteLine("Invalid Input");
         }
-      }
 
-        }
+      }
+    }
 
     static void Options()
     {
@@ -54,35 +65,6 @@ namespace ATM
       Console.WriteLine("2. Withdraw");
       Console.WriteLine("3. Show Balance");
       Console.WriteLine("4. Exit");
-    }
-    static void deposit(BankUser user)
-    {
-      Console.WriteLine("How much $$ would you like to deposit? ");
-      user.balance += decimal.Parse(Console.ReadLine());
-      Console.WriteLine($"YOUR BALANCE IS:{user.balance}");
-
-
-    }
-
-    static void withdraw(BankUser user)
-    {
-      Console.WriteLine("How much $$ would you like to withdraw? ");
-      decimal amount = decimal.Parse(Console.ReadLine());
-      if(amount <= user.balance)
-      {
-        user.balance -= amount;
-      }
-      
-      Console.WriteLine($"YOUR BALANCE IS:{user.balance}");
-
-
-    }
-
-    static void showBalance(BankUser user)
-    {
-      Console.WriteLine($"YOUR BALANCE IS:{user.balance}");
-    }
-
-    
+    }   
   }
 }
