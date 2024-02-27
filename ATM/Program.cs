@@ -8,7 +8,7 @@ namespace ATM
     public static void Main(string[] args)
     {
       List<BankUser> users = new List<BankUser>();
-      BankUser.addfakedata(users);
+      addfakedata(users);
       Console.WriteLine("WELCOME TO ATM...");
       while (true)
       {
@@ -57,7 +57,37 @@ namespace ATM
 
       }
     }
+    public static void addfakedata(List<BankUser> users)
+    {
 
+      users.Add(new BankUser
+      {
+        firstName = "sherif",
+        lastName = "Mahdy",
+        cardNumber = "0000000",
+        Pin = 1234,
+        balance = 100.0M
+      });
+
+      users.Add(new BankUser
+      {
+        firstName = "medo",
+        lastName = "Mahdy",
+        cardNumber = "0000001",
+        Pin = 1234,
+        balance = 200.0M
+      });
+
+      users.Add(new BankUser
+      {
+        firstName = "noun",
+        lastName = "Mahdy",
+        cardNumber = "0000002",
+        Pin = 1234,
+        balance = 300.0M
+      });
+
+    }
     static void Options()
     {
       Console.WriteLine("Please choose from one of the following...");
